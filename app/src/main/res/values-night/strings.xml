@@ -3,4 +3,8 @@
     <string name="name_hint">Enter your name</string>
     <string name="create_account">Create Account</string>
     <string name="subtitle">Subtitle</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="quiz_status">quiz status</string>
+    <string name="status">quiz status</string>
 </resources>
