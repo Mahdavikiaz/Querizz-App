@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="name_hint">Enter your name</string>
+    <string name="create_account">Create Account</string>
+    <string name="subtitle">Subtitle</string>
     <string name="welcome_subtitle">Subtitle</string>
     <string name="welcome_title">Querizz</string>
-    <string name="upload_file_title">Upload File</string>
-    <string name="create_account">Create Account!</string>
-    <string name="register_subtitle">register subtitle</string>
-    <string name="name_hint">Enter your name</string>
-    <string name="upload_subtitle">What are you doing?</string>
 </resources>
