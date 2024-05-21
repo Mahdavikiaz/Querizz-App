@@ -10,4 +10,9 @@
     <string name="sign_up_button">Sign Up</string>
     <string name="or">or</string>
     <string name="welcome">Welcome</string>
+    <string name="upload_file_title">Upload File</string>
+    <string name="create_account">Create Account!</string>
+    <string name="register_subtitle">register subtitle</string>
+    <string name="name_hint">Enter your name</string>
+    <string name="upload_subtitle">What are you doing?</string>
 </resources>
