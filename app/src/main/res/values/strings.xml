@@ -9,7 +9,4 @@
     <string name="sign_up_button">Sign Up</string>
     <string name="create_account">Create Account</string>
     <string name="subtitle">Subtitle</string>
-    <string name="title">Title</string>
-    <string name="description">Description</string>
-    <string name="status">quiz status</string>
 </resources>
