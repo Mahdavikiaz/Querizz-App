@@ -7,4 +7,33 @@
     android:layout_height="match_parent"
     tools:context=".presentation.quiz.QuizActivity">
 
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/quiz_bg_header"
+            android:scaleType="fitStart"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:src="@drawable/arrow_back"
+            android:background="@null"
+            android:minHeight="0dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="32dp"
+            />
+
+
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
