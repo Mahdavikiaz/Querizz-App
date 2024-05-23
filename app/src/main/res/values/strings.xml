@@ -5,9 +5,18 @@
     <string name="email_hint">Enter your email</string>
     <string name="password_hint">Enter your password</string>
     <string name="sign_in_button">Sign In</string>
-    <string name="welcome_subtitle">Subtitle</string>
-    <string name="welcome_title">Querizz</string>
+    <string name="name_hint">Enter your name</string>
     <string name="sign_up_button">Sign Up</string>
+    <string name="create_account">Create Account</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="quiz_status">quiz status</string>
+    <string name="status">quiz status</string>
+    <string name="welcome">welcome\n</string>
+    <string name="welcome_title">Querizz</string>
+    <string name="welcome_subtitle">subtitle</string>
     <string name="or">or</string>
-    <string name="welcome">Welcome</string>
+    <string name="upload_file_title">Upload File</string>
+    <string name="upload_subtitle">What are you doing?</string>
 </resources>
