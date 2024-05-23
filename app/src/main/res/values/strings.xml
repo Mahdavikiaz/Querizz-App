@@ -13,4 +13,8 @@
     <string name="description">Description</string>
     <string name="quiz_status">quiz status</string>
     <string name="status">quiz status</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_text_1">Summary</string>
+    <string name="tab_text_2">Quiz</string>
 </resources>
