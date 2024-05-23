@@ -13,10 +13,4 @@
     <string name="description">Description</string>
     <string name="quiz_status">quiz status</string>
     <string name="status">quiz status</string>
-    <string name="welcome">welcome\n</string>
-    <string name="welcome_title">Querizz</string>
-    <string name="welcome_subtitle">subtitle</string>
-    <string name="or">or</string>
-    <string name="upload_file_title">Upload File</string>
-    <string name="upload_subtitle">What are you doing?</string>
 </resources>
