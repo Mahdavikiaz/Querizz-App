@@ -95,7 +95,7 @@
             tools:listitem="@layout/item_summary"/>
 
     </ScrollView>
-    
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_upload"
         android:layout_width="wrap_content"
