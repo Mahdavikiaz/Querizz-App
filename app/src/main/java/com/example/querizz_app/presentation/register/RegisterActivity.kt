@@ -1,18 +1,33 @@
 package com.example.querizz_app.presentation.register
 
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.querizz_app.R
 import com.example.querizz_app.databinding.ActivityRegisterBinding
+import com.example.querizz_app.presentation.api.AuthApiConfig
 import com.example.querizz_app.presentation.login.LoginActivity
+import com.example.querizz_app.presentation.pref.UserPreference
+import com.example.querizz_app.presentation.repository.AuthRepository
+import com.example.querizz_app.presentation.view.AuthViewModelFactory
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
+
+    private val viewModel: RegisterViewModel by viewModels {
+        AuthViewModelFactory(AuthRepository(AuthApiConfig.getApiService(getTokenUser()), UserPreference.getInstance(this)))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +36,75 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btSignup.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+            setupRegister()
+//            startActivity(Intent(this, LoginActivity::class.java))
+//            finish()
         }
+
+        viewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
+        viewModel.registerResult.observe(this) {
+            when (it) {
+                is RegisterViewModel.RegisterResult.Success -> {
+                    setupAction(it.response)
+
+                }
+                is RegisterViewModel.RegisterResult.Error -> {
+                    setupAction(it.error)
+                }
+                is RegisterViewModel.RegisterResult.Loading -> {
+
+                }
+            }
+        }
+    }
+
+    private fun setupView() {
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun setupRegister() {
+        val name = binding.etName.text.toString()
+        val email = binding.etEmail.text.toString()
+        val password = binding.etPassword.text.toString()
+
+        viewModel.register(name, email, password)
+    }
+
+    private fun getTokenUser(): String {
+        val sharedPreferences = getSharedPreferences(USER_PREF, Context.MODE_PRIVATE)
+        return sharedPreferences.getString(USER_TOKEN, "") ?: ""
+    }
+
+    private fun setupAction(message: String) {
+        AlertDialog.Builder(this).apply {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton("OKE") { _, _ ->
+                finish()
+            }
+            create()
+            show()
+        }
+    }
+
+    companion object {
+        private const val USER_PREF = "user_preferences"
+        private const val USER_TOKEN = "user_token"
     }
 }
