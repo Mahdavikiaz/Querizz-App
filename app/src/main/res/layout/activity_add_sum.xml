@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="@string/upload_file_title"
         android:textSize="32sp"
-        android:fontFamily="@font/HelveticaNeueBold"
+        android:fontFamily="@font/helveticaneuebold"
         app:layout_constraintTop_toTopOf="parent"
         />
 
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:fontFamily="@font/HelveticaNeueRoman"
+        android:fontFamily="@font/helveticaneuemedium"
         android:text="@string/upload_subtitle"
         app:layout_constraintTop_toBottomOf="@id/title"
         android:layout_marginTop="8dp"
@@ -67,7 +67,7 @@
                 android:layout_gravity="center"
                 android:text="Upload your file"
                 android:textColor="@color/neutral_900"
-                android:fontFamily="@font/HelveticaNeueMedium"
+                android:fontFamily="@font/helveticaneuemedium"
                 android:textSize="16sp" />
 
             <TextView
@@ -78,7 +78,7 @@
                 android:layout_gravity="center"
                 android:text="Maximum size 10mb"
                 android:textColor="@color/neutral_600"
-                android:fontFamily="@font/HelveticaNeueMedium"
+                android:fontFamily="@font/helveticaneuemedium"
                 android:textSize="14sp" />
 
 
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Title"
-            android:fontFamily="@font/HelveticaNeueRoman"
+            android:fontFamily="@font/helveticaneueroman"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
             android:paddingVertical="16dp"
@@ -123,7 +123,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:hint="Subtitle"
-            android:fontFamily="@font/HelveticaNeueRoman"
+            android:fontFamily="@font/helveticaneueroman"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
             android:paddingVertical="16dp"
@@ -138,7 +138,7 @@
         android:text="Summarize"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:fontFamily="@font/HelveticaNeueBold"
+        android:fontFamily="@font/helveticaneuebold"
         android:paddingVertical="14dp"
         android:backgroundTint="@color/primary_500"
         android:layout_marginTop="48dp"

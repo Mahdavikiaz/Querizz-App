@@ -1,9 +1,10 @@
-package com.example.querizz_app.presentation.repository
+package com.example.querizz_app.data.repository
 
-import com.example.querizz_app.presentation.api.AuthApiService
-import com.example.querizz_app.presentation.api.RegisterResponse
-import com.example.querizz_app.presentation.pref.UserModel
-import com.example.querizz_app.presentation.pref.UserPreference
+import com.example.querizz_app.data.api.service.AuthApiService
+import com.example.querizz_app.data.response.RegisterResponse
+import com.example.querizz_app.data.model.UserModel
+import com.example.querizz_app.data.pref.UserPreference
+import com.example.querizz_app.data.response.LoginResponse
 
 class AuthRepository(
     private val authApiService: AuthApiService,
@@ -11,6 +12,10 @@ class AuthRepository(
 ) {
     suspend fun register(name: String, email: String, password: String): RegisterResponse {
         return authApiService.register(name, email, password)
+    }
+
+    suspend fun login(email: String, password: String): LoginResponse {
+        return authApiService.login(email, password)
     }
 
     suspend fun saveSession(user: UserModel) {

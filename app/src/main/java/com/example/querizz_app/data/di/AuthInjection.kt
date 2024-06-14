@@ -1,9 +1,9 @@
-package com.example.querizz_app.presentation.di
+package com.example.querizz_app.data.di
 
 import android.content.Context
-import com.example.querizz_app.presentation.api.AuthApiConfig
-import com.example.querizz_app.presentation.pref.UserPreference
-import com.example.querizz_app.presentation.repository.AuthRepository
+import com.example.querizz_app.data.api.config.AuthApiConfig
+import com.example.querizz_app.data.pref.UserPreference
+import com.example.querizz_app.data.repository.AuthRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 

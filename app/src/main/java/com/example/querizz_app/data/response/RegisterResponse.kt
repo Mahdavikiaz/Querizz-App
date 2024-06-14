@@ -1,4 +1,4 @@
-package com.example.querizz_app.presentation.api
+package com.example.querizz_app.data.response
 
 import com.google.gson.annotations.SerializedName
 

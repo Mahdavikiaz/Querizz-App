@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.querizz_app.presentation.repository.AuthRepository
-import com.example.querizz_app.presentation.api.ErrorResponse
+import com.example.querizz_app.data.repository.AuthRepository
+import com.example.querizz_app.data.response.ErrorResponse
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

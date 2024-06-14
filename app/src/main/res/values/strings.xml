@@ -17,4 +17,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_text_1">Summary</string>
     <string name="tab_text_2">Quiz</string>
+    <string name="upload_file_title">Upload File</string>
+    <string name="upload_subtitle">Upload your file</string>
+    <string name="greeting">Hello, User</string>
+    <string name="register_subtitle">Create your querizz account</string>
+    <string name="welcome">Querizz</string>
+    <string name="welcome_title">Querizz</string>
+    <string name="welcome_subtitle">Welcome to Querizz</string>
+    <string name="or">Or</string>
 </resources>

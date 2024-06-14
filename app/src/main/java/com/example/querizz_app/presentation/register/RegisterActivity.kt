@@ -1,24 +1,18 @@
 package com.example.querizz_app.presentation.register
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.querizz_app.R
 import com.example.querizz_app.databinding.ActivityRegisterBinding
-import com.example.querizz_app.presentation.api.AuthApiConfig
-import com.example.querizz_app.presentation.login.LoginActivity
-import com.example.querizz_app.presentation.pref.UserPreference
-import com.example.querizz_app.presentation.repository.AuthRepository
+import com.example.querizz_app.data.api.config.AuthApiConfig
+import com.example.querizz_app.data.pref.UserPreference
+import com.example.querizz_app.data.repository.AuthRepository
 import com.example.querizz_app.presentation.view.AuthViewModelFactory
 
 class RegisterActivity : AppCompatActivity() {

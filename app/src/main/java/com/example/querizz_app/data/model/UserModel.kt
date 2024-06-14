@@ -1,4 +1,4 @@
-package com.example.querizz_app.presentation.pref
+package com.example.querizz_app.data.model
 
 data class UserModel (
     val email: String,

@@ -1,6 +1,7 @@
-package com.example.querizz_app.presentation.api
+package com.example.querizz_app.data.api.config
 
 import com.example.querizz_app.BuildConfig
+import com.example.querizz_app.data.api.service.AuthApiService
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
