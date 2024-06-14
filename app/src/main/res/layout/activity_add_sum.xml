@@ -97,6 +97,7 @@
         app:layout_constraintTop_toBottomOf="@id/file_upload">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -119,6 +120,7 @@
         app:layout_constraintTop_toBottomOf="@id/title_input">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etSubtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -143,5 +145,17 @@
         android:backgroundTint="@color/primary_500"
         android:layout_marginTop="48dp"
         app:layout_constraintTop_toBottomOf="@id/subtitle_input" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
