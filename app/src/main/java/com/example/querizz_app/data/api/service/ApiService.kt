@@ -25,6 +25,6 @@ interface ApiService {
     @GET("getHistories")
     suspend fun getSummaries(
         @Query("page") page: Int = 1,
-        @Query("size") size: Int = 20
+        @Query("size") size: Int = 3
     ): SumResponse
 }
