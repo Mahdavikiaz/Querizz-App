@@ -33,8 +33,8 @@ class Repository(
 
     suspend fun logout() = userPreference.logout()
 
-    suspend fun uploadFile(token: String, title: RequestBody, subtitle: RequestBody): UploadResponse {
-        return apiService.uploadFile("Bearer $token", title, subtitle)
+    suspend fun uploadFile(token: String, file: MultipartBody.Part, title: RequestBody, subtitle: RequestBody): UploadResponse {
+        return apiService.uploadFile("Bearer $token", file, title, subtitle)
     }
 
     fun getSummary(): LiveData<PagingData<DataItem>> = liveData {
