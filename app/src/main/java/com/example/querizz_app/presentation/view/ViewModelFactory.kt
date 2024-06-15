@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.querizz_app.data.di.Injection
 import com.example.querizz_app.data.repository.Repository
 import com.example.querizz_app.presentation.add.AddSumViewModel
+import com.example.querizz_app.presentation.home.HomeViewModel
 
 class ViewModelFactory(private val repository: Repository) : ViewModelProvider.NewInstanceFactory() {
 
@@ -15,7 +16,8 @@ class ViewModelFactory(private val repository: Repository) : ViewModelProvider.N
             modelClass.isAssignableFrom(AddSumViewModel::class.java) -> {
                 AddSumViewModel(repository) as T
             }
-            else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
+
+            else -> throw IllegalArgumentException("Unknown Summary Feature ViewModel class: " + modelClass.name)
         }
     }
 

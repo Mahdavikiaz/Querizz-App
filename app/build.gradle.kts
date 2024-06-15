@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.viewpager2)
+    implementation(libs.androidx.paging.runtime.ktx)
 
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 

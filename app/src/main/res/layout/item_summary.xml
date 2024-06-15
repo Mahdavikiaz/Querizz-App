@@ -49,17 +49,6 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/helveticaneueroman"/>
 
-                <TextView
-                    android:id="@+id/tv_item_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="@string/status"
-                    android:textSize="12sp"
-                    android:textColor="@color/neutral_600"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/helveticaneueroman"/>
-
             </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageButton

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.querizz_app.data.di.AuthInjection
 import com.example.querizz_app.presentation.register.RegisterViewModel
 import com.example.querizz_app.data.repository.AuthRepository
+import com.example.querizz_app.presentation.home.HomeViewModel
 import com.example.querizz_app.presentation.login.LoginViewModel
 
 class AuthViewModelFactory(private val repository: AuthRepository) : ViewModelProvider.NewInstanceFactory() {
@@ -18,7 +19,10 @@ class AuthViewModelFactory(private val repository: AuthRepository) : ViewModelPr
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(repository) as T
             }
-            else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(repository) as T
+            }
+            else -> throw IllegalArgumentException("Unknown Auth ViewModel class: " + modelClass.name)
         }
     }
 

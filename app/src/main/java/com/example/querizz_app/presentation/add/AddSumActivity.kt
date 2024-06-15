@@ -67,7 +67,7 @@ class AddSumActivity : AppCompatActivity() {
                 val token = userPreference.getSession().first().token
 
                 viewModel.uploadFile(token, titleRequestBody, subtitleRequestBody)
-
+                Log.e("Success", "Success upload file")
             } catch (e: HttpException) {
                 val errorBody = e.response()?.errorBody()?.string()
                 val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)

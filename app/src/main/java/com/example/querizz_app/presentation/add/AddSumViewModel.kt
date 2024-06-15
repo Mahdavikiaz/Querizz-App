@@ -1,5 +1,6 @@
 package com.example.querizz_app.presentation.add
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.RequestBody
 import java.io.File
+import kotlin.math.log
 
 class AddSumViewModel(private val repository: Repository): ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
