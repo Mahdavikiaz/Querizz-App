@@ -3,18 +3,24 @@ package com.example.querizz_app.presentation.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.querizz_app.adapter.LoadingStateAdapter
 import com.example.querizz_app.adapter.SumAdapter
+import com.example.querizz_app.data.api.config.ApiConfig
 import com.example.querizz_app.data.api.config.AuthApiConfig
 import com.example.querizz_app.data.pref.UserPreference
 import com.example.querizz_app.data.repository.AuthRepository
+import com.example.querizz_app.data.repository.Repository
 import com.example.querizz_app.databinding.ActivityHomeBinding
 import com.example.querizz_app.presentation.add.AddSumActivity
+import com.example.querizz_app.presentation.add.AddSumViewModel
 import com.example.querizz_app.presentation.view.AuthViewModelFactory
+import com.example.querizz_app.presentation.view.ViewModelFactory
+import com.example.querizz_app.presentation.welcome.WelcomeActivity
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -24,7 +30,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var sumAdapter: SumAdapter
 
     private val viewModel by viewModels<HomeViewModel> {
-        AuthViewModelFactory(AuthRepository(AuthApiConfig.getApiService(getTokenUser()), UserPreference.getInstance(this)))
+        ViewModelFactory(Repository(ApiConfig.getApiService(getTokenUser()), UserPreference.getInstance(this)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,9 +39,29 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         sumAdapter = SumAdapter()
         binding.rvSummary.adapter = sumAdapter
-        setSummaryData()
+        checkAuthority()
+        binding.logout.setOnClickListener {
+            viewModel.logout()
+            val intent = Intent(this@HomeActivity, WelcomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
         binding.fabUpload.setOnClickListener {
             navigateToUpload()
+        }
+    }
+
+    private fun checkAuthority() {
+        viewModel.getSession().observe(this) { user ->
+            if (user.token.isNullOrEmpty()) {
+                startActivity(Intent(this, WelcomeActivity::class.java))
+                Log.e("Token", "Token not found")
+                finish()
+            } else {
+                Log.d("Token", "Token found")
+                setSummaryData()
+                binding.tvHome.text = "Hello ${user.email}"
+            }
         }
     }
 

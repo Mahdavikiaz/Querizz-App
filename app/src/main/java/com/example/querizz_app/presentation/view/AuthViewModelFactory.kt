@@ -19,9 +19,6 @@ class AuthViewModelFactory(private val repository: AuthRepository) : ViewModelPr
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(repository) as T
             }
-            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(repository) as T
-            }
             else -> throw IllegalArgumentException("Unknown Auth ViewModel class: " + modelClass.name)
         }
     }

@@ -9,8 +9,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.viewModelScope
 import com.example.querizz_app.data.api.config.AuthApiConfig
+import com.example.querizz_app.data.model.UserModel
 import com.example.querizz_app.data.pref.UserPreference
 import com.example.querizz_app.data.repository.AuthRepository
+import com.example.querizz_app.data.response.ApiResponse
 import com.example.querizz_app.databinding.ActivityLoginBinding
 import com.example.querizz_app.presentation.home.HomeActivity
 import com.example.querizz_app.presentation.register.RegisterActivity
@@ -37,26 +39,29 @@ class LoginActivity : AppCompatActivity() {
             showLoading(it)
         }
 
-        viewModel.saveSessionStatus.observe(this) {
-            when (it) {
-                is LoginViewModel.LoginResult.Success -> {
-                    setupAction(it.response)
-
-                }
-                is LoginViewModel.LoginResult.Error -> {
-                    setupAction(it.error)
-                }
-                is LoginViewModel.LoginResult.Loading -> {
-
-                }
-            }
-        }
     }
 
     private fun login() {
         val email = binding.etEmail.text.toString()
         val password = binding.etPassword.text.toString()
-        viewModel.login(email, password)
+        viewModel.login(email, password).observe(this@LoginActivity) { response ->
+            when (response) {
+                is ApiResponse.Loading -> {
+                    showLoading(true)
+                }
+                is ApiResponse.Success -> {
+                    showLoading(false)
+                    val token = response.data.token
+                    viewModel.saveSession(UserModel(email, token!!, true))
+                    viewModel.saveSessionStatus.observe(this@LoginActivity) { isSaved ->
+                        setupAction("Login Success")
+                    }
+                }
+                is ApiResponse.Error -> {
+                    showLoading(false)
+                }
+            }
+        }
     }
 
     private fun setupAction(message: String) {

@@ -12,9 +12,12 @@ import com.example.querizz_app.data.api.service.AuthApiService
 import com.example.querizz_app.data.response.RegisterResponse
 import com.example.querizz_app.data.model.UserModel
 import com.example.querizz_app.data.pref.UserPreference
+import com.example.querizz_app.data.response.ApiResponse
 import com.example.querizz_app.data.response.DataItem
 import com.example.querizz_app.data.response.LoginResponse
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.firstOrNull
+import retrofit2.HttpException
 
 class AuthRepository(
     private val authApiService: AuthApiService,
@@ -24,33 +27,23 @@ class AuthRepository(
         return authApiService.register(name, email, password)
     }
 
-    suspend fun login(email: String, password: String): LoginResponse {
-        return authApiService.login(email, password)
+    fun login(email: String, password: String) : LiveData<ApiResponse<LoginResponse>> = liveData {
+        emit(ApiResponse.Loading)
+        try {
+            val response = authApiService.login(email, password)
+            emit(ApiResponse.Success(response))
+        } catch (e : HttpException) {
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, LoginResponse::class.java)
+            val errorMessage = errorBody.message
+            emit(ApiResponse.Error(errorMessage))
+        } catch (e : Exception) {
+            emit(ApiResponse.Error(e.message.toString()))
+        }
     }
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)
-    }
-
-    fun getSession() = userPreference.getSession()
-
-    fun getSummary(): LiveData<PagingData<DataItem>> = liveData {
-        val userSession = userPreference.getSession().firstOrNull()
-        if (userSession != null && userSession.token.isNotEmpty()) {
-            val token = userSession.token
-            val apiService = ApiConfig.getApiService(token)
-            val pager = Pager(
-                config = PagingConfig(
-                    pageSize = 5
-                ),
-                pagingSourceFactory = {
-                    SumPagingSource(apiService)
-                }
-            ).liveData
-            emitSource(pager)
-        } else {
-            emit(PagingData.empty())
-        }
     }
 
     companion object {

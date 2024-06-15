@@ -10,12 +10,19 @@ import com.example.querizz_app.data.model.UserModel
 import com.example.querizz_app.data.repository.AuthRepository
 import com.example.querizz_app.data.repository.Repository
 import com.example.querizz_app.data.response.DataItem
+import kotlinx.coroutines.launch
 
-class HomeViewModel(private val repository: AuthRepository) : ViewModel() {
+class HomeViewModel(private val repository: Repository) : ViewModel() {
 
     val summaries: LiveData<PagingData<DataItem>> = repository.getSummary().cachedIn(viewModelScope)
 
     fun getSession(): LiveData<UserModel> {
         return repository.getSession().asLiveData()
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
+        }
     }
 }

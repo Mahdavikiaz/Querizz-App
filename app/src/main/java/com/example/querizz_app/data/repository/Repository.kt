@@ -11,10 +11,12 @@ import com.example.querizz_app.data.SumPagingSource
 import com.example.querizz_app.data.api.config.ApiConfig
 import com.example.querizz_app.data.api.service.ApiService
 import com.example.querizz_app.data.api.service.AuthApiService
+import com.example.querizz_app.data.model.UserModel
 import com.example.querizz_app.data.pref.UserPreference
 import com.example.querizz_app.data.response.DataItem
 import com.example.querizz_app.data.response.UploadResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
@@ -25,28 +27,30 @@ class Repository(
     private val userPreference: UserPreference
 ) {
 
-    fun getSession() = userPreference.getSession()
+    fun getSession(): Flow<UserModel> {
+        return userPreference.getSession()
+    }
 
     suspend fun logout() = userPreference.logout()
 
-//    fun getSummary(): LiveData<PagingData<DataItem>> = liveData {
-//        val userSession = userPreference.getSession().firstOrNull()
-//        if (userSession != null && userSession.token.isNotEmpty()) {
-//            val token = userSession.token
-//            val apiService = ApiConfig.getApiService(token)
-//            val pager = Pager(
-//                config = PagingConfig(
-//                    pageSize = 5
-//                ),
-//                pagingSourceFactory = {
-//                    SumPagingSource(apiService)
-//                }
-//            ).liveData
-//            emitSource(pager)
-//        } else {
-//            emit(PagingData.empty())
-//        }
-//    }
+    fun getSummary(): LiveData<PagingData<DataItem>> = liveData {
+        val userSession = userPreference.getSession().firstOrNull()
+        if (userSession != null && userSession.token.isNotEmpty()) {
+            val token = userSession.token
+            val apiService = ApiConfig.getApiService(token)
+            val pager = Pager(
+                config = PagingConfig(
+                    pageSize = 5
+                ),
+                pagingSourceFactory = {
+                    SumPagingSource(apiService)
+                }
+            ).liveData
+            emitSource(pager)
+        } else {
+            emit(PagingData.empty())
+        }
+    }
 
     companion object {
         fun getInstance(apiService: ApiService, userPreference: UserPreference) =

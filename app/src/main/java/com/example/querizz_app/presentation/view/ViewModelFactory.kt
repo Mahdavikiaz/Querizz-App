@@ -16,6 +16,9 @@ class ViewModelFactory(private val repository: Repository) : ViewModelProvider.N
             modelClass.isAssignableFrom(AddSumViewModel::class.java) -> {
                 AddSumViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(repository) as T
+            }
 
             else -> throw IllegalArgumentException("Unknown Summary Feature ViewModel class: " + modelClass.name)
         }

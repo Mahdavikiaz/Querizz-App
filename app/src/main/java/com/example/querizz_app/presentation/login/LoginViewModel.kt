@@ -1,5 +1,6 @@
 package com.example.querizz_app.presentation.login
 
+import android.os.UserHandle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +15,8 @@ import retrofit2.HttpException
 
 class LoginViewModel(private val repository: AuthRepository): ViewModel() {
 
-    private val _saveSessionStatus = MutableLiveData<LoginResult>()
-    val saveSessionStatus: LiveData<LoginResult> = _saveSessionStatus
+    private val _saveSessionStatus = MutableLiveData<Boolean>()
+    val saveSessionStatus: LiveData<Boolean> = _saveSessionStatus
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -26,24 +27,15 @@ class LoginViewModel(private val repository: AuthRepository): ViewModel() {
         object Loading: LoginResult()
     }
 
-    fun login(email: String, password: String) {
-        _isLoading.value = true
+    fun login(name: String, email: String) = repository.login(name, email)
+
+    fun saveSession(user: UserModel) {
         viewModelScope.launch {
-            _saveSessionStatus.value = LoginResult.Loading
             try {
-                val response = repository.login(email, password)
-                _saveSessionStatus.value = LoginResult.Success(response.message ?: "Logged in")
+                _saveSessionStatus.postValue(true)
+                repository.saveSession(user)
             } catch (e: Exception) {
-                _saveSessionStatus.value = LoginResult.Error(e.message ?: "Failed to login")
-            } catch (e: HttpException) {
-                val jsonInString = e.response()?.errorBody()?.string()
-                val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
-                val errorMessage = errorBody.message
-                _saveSessionStatus.value = errorMessage?.let {
-                    LoginResult.Error(it)
-                }
-            } finally {
-                _isLoading.value = false
+                _saveSessionStatus.postValue(false)
             }
         }
     }
