@@ -66,20 +66,50 @@ class AddSumActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 try {
+                    showLoading(true)  // Show loading before starting upload
                     val userPreference = UserPreference.getInstance(this@AddSumActivity)
                     val token = userPreference.getSession().first().token
 
-                    viewModel.uploadFile(token, titleRequestBody, subtitleRequestBody)
+                    val response = viewModel.uploadFile(token, titleRequestBody, subtitleRequestBody)
                     Log.e("Success", "Success upload file")
+                    showToast(response.message!!)
                 } catch (e: HttpException) {
                     val errorBody = e.response()?.errorBody()?.string()
                     val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
                     showToast(errorResponse.message!!)
-                    showLoading(false)
+                    Log.e("Error", "Error upload file: ${e.message()}")
+                } finally {
+                    showLoading(false)  // Hide loading after upload
                 }
             }
         }
     }
+
+
+//    private fun uploadFile() {
+//        currentFileUri?.let {
+//            val title = binding.etTitle.text.toString()
+//            val subtitle = binding.etSubtitle.text.toString()
+//
+//            val titleRequestBody = title.toRequestBody("text/plain".toMediaType())
+//            val subtitleRequestBody = subtitle.toRequestBody("text/plain".toMediaType())
+//
+//            lifecycleScope.launch {
+//                try {
+//                    val userPreference = UserPreference.getInstance(this@AddSumActivity)
+//                    val token = userPreference.getSession().first().token
+//
+//                    viewModel.uploadFile(token, titleRequestBody, subtitleRequestBody)
+//                    Log.e("Success", "Success upload file")
+//                } catch (e: HttpException) {
+//                    val errorBody = e.response()?.errorBody()?.string()
+//                    val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
+//                    showToast(errorResponse.message!!)
+//                    showLoading(false)
+//                }
+//            }
+//        }
+//    }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

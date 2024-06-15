@@ -33,6 +33,10 @@ class Repository(
 
     suspend fun logout() = userPreference.logout()
 
+    suspend fun uploadFile(token: String, title: RequestBody, subtitle: RequestBody): UploadResponse {
+        return apiService.uploadFile("Bearer $token", title, subtitle)
+    }
+
     fun getSummary(): LiveData<PagingData<DataItem>> = liveData {
         val userSession = userPreference.getSession().firstOrNull()
         if (userSession != null && userSession.token.isNotEmpty()) {

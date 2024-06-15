@@ -24,15 +24,20 @@ class AddSumViewModel(private val repository: Repository): ViewModel() {
     val response: LiveData<UploadResponse> = _response
 
     suspend fun uploadFile(token: String, title: RequestBody, subtitle: RequestBody): UploadResponse {
-        return withContext(Dispatchers.IO) {
-            try {
-                val apiService = ApiConfig.getApiService(token)
-                val response = apiService.uploadFile(title, subtitle)
-                _response.postValue(response)
-                response
-            } catch (e: Exception) {
-                throw e
-            }
-        }
+        // Implement your API call here
+        return repository.uploadFile(token, title, subtitle)
     }
+
+//    suspend fun uploadFile(token: String, title: RequestBody, subtitle: RequestBody): UploadResponse {
+//        return withContext(Dispatchers.IO) {
+//            try {
+//                val apiService = ApiConfig.getApiService(token)
+//                val response = apiService.uploadFile(title, subtitle)
+//                _response.postValue(response)
+//                response
+//            } catch (e: Exception) {
+//                throw e
+//            }
+//        }
+//    }
 }
