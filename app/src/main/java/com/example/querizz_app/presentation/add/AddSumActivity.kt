@@ -2,6 +2,7 @@ package com.example.querizz_app.presentation.add
 
 import android.app.ProgressDialog.show
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -31,6 +32,7 @@ import retrofit2.HttpException
 class AddSumActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddSumBinding
+    private var currentFileUri: Uri? = null
 
     private val viewModel by viewModels<AddSumViewModel> {
         ViewModelFactory.getInstance(this)
@@ -55,24 +57,26 @@ class AddSumActivity : AppCompatActivity() {
     }
 
     private fun uploadFile() {
-        val title = binding.etTitle.text.toString()
-        val subtitle = binding.etSubtitle.text.toString()
+        currentFileUri?.let {
+            val title = binding.etTitle.text.toString()
+            val subtitle = binding.etSubtitle.text.toString()
 
-        val titleRequestBody = title.toRequestBody("text/plain".toMediaType())
-        val subtitleRequestBody = subtitle.toRequestBody("text/plain".toMediaType())
+            val titleRequestBody = title.toRequestBody("text/plain".toMediaType())
+            val subtitleRequestBody = subtitle.toRequestBody("text/plain".toMediaType())
 
-        lifecycleScope.launch {
-            try {
-                val userPreference = UserPreference.getInstance(this@AddSumActivity)
-                val token = userPreference.getSession().first().token
+            lifecycleScope.launch {
+                try {
+                    val userPreference = UserPreference.getInstance(this@AddSumActivity)
+                    val token = userPreference.getSession().first().token
 
-                viewModel.uploadFile(token, titleRequestBody, subtitleRequestBody)
-                Log.e("Success", "Success upload file")
-            } catch (e: HttpException) {
-                val errorBody = e.response()?.errorBody()?.string()
-                val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
-                showToast(errorResponse.message!!)
-                showLoading(false)
+                    viewModel.uploadFile(token, titleRequestBody, subtitleRequestBody)
+                    Log.e("Success", "Success upload file")
+                } catch (e: HttpException) {
+                    val errorBody = e.response()?.errorBody()?.string()
+                    val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
+                    showToast(errorResponse.message!!)
+                    showLoading(false)
+                }
             }
         }
     }
