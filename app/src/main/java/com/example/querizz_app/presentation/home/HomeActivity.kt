@@ -68,7 +68,6 @@ class HomeActivity : AppCompatActivity() {
     private fun navigateToUpload() {
         val intent = Intent(this@HomeActivity, AddSumActivity::class.java)
         startActivity(intent)
-        finish()
     }
 
     private fun setSummaryData() {

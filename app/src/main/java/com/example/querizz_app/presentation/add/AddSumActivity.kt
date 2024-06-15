@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.querizz_app.R
 import com.example.querizz_app.data.api.config.ApiConfig
+import com.example.querizz_app.data.api.service.ApiService
 import com.example.querizz_app.data.pref.UserPreference
 import com.example.querizz_app.data.response.UploadResponse
 import com.example.querizz_app.databinding.ActivityAddSumBinding
@@ -57,19 +58,18 @@ class AddSumActivity : AppCompatActivity() {
     }
 
     private fun uploadFile() {
-        currentFileUri?.let {
             val title = binding.etTitle.text.toString()
             val subtitle = binding.etSubtitle.text.toString()
 
             val titleRequestBody = title.toRequestBody("text/plain".toMediaType())
             val subtitleRequestBody = subtitle.toRequestBody("text/plain".toMediaType())
-
+            Log.e("Upload", "Upload file...")
             lifecycleScope.launch {
                 try {
                     val userPreference = UserPreference.getInstance(this@AddSumActivity)
                     val token = userPreference.getSession().first().token
-
-                    viewModel.uploadFile(token, titleRequestBody, subtitleRequestBody)
+                    val apiService = ApiConfig.getApiService(token)
+                    val successResponse = apiService.uploadFile(titleRequestBody, subtitleRequestBody)
                     Log.e("Success", "Success upload file")
                 } catch (e: HttpException) {
                     val errorBody = e.response()?.errorBody()?.string()
@@ -78,7 +78,6 @@ class AddSumActivity : AppCompatActivity() {
                     showLoading(false)
                 }
             }
-        }
     }
 
     private fun showLoading(isLoading: Boolean) {

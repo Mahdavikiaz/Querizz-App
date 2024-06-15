@@ -19,7 +19,7 @@ interface ApiService {
         @Part("subtitle") subtitle: RequestBody
     ): UploadResponse
 
-    @GET("histories")
+    @GET("getHistories")
     suspend fun getSummaries(
         @Query("page") page: Int = 1,
         @Query("size") size: Int = 20
