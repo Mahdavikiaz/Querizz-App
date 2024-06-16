@@ -73,19 +73,20 @@ class AddSumActivity : AppCompatActivity() {
 
     private fun uploadFile() {
         currentFileUri?.let { uri ->
-            val imageFile = uriToFile(uri, this).reduceFileImage()
+            val imageFile = uriToFile(uri, this)
             val title = binding.etTitle.text.toString()
             val subtitle = binding.etSubtitle.text.toString()
             showLoading(true)
 
             val titleRequestBody = title.toRequestBody("text/plain".toMediaType())
             val subtitleRequestBody = subtitle.toRequestBody("text/plain".toMediaType())
-            val mimeType = contentResolver.getType(uri) ?: "application/octet-stream"
-            val requestImageFile = imageFile.asRequestBody(mimeType.toMediaTypeOrNull())
+            val requestFile = imageFile.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+//            val mimeType = contentResolver.getType(uri) ?: "application/octet-stream"
+//            val requestImageFile = imageFile.asRequestBody(mimeType.toMediaTypeOrNull())
             val multipartBody = MultipartBody.Part.createFormData(
                 "file",
                 imageFile.name,
-                requestImageFile
+                requestFile
             )
 
             lifecycleScope.launch {
@@ -94,13 +95,11 @@ class AddSumActivity : AppCompatActivity() {
                     val token = userPref.getSession().first().token
                     val apiService = ApiConfig.getApiService(token)
                     val successResponse = apiService.uploadFile(multipartBody, titleRequestBody, subtitleRequestBody)
-                    println("Supported MIME type: $mimeType")
                     showToast(successResponse.message!!)
                     showLoading(false)
                 } catch (e: HttpException) {
                     val errorBody = e.response()?.errorBody()?.string()
                     val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
-                    println("Unsupported MIME type: $mimeType")
                     showToast(errorResponse.message!!)
                     Log.e("Error", errorResponse.statusCode.toString())
                     showLoading(false)

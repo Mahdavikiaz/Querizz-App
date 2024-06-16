@@ -57,16 +57,27 @@ fun createCustomTempFile(context: Context): File {
     return File.createTempFile(timeStamp, ".jpg", filesDir)
 }
 
-fun uriToFile(imageUri: Uri, context: Context): File {
-    val myFile = createCustomTempFile(context)
-    val inputStream = context.contentResolver.openInputStream(imageUri) as InputStream
-    val outputStream = FileOutputStream(myFile)
-    val buffer = ByteArray(1024)
-    var length: Int
-    while (inputStream.read(buffer).also { length = it } > 0) outputStream.write(buffer, 0, length)
-    outputStream.close()
-    inputStream.close()
-    return myFile
+//fun uriToFile(imageUri: Uri, context: Context): File {
+//    val myFile = createCustomTempFile(context)
+//    val inputStream = context.contentResolver.openInputStream(imageUri) as InputStream
+//    val outputStream = FileOutputStream(myFile)
+//    val buffer = ByteArray(1024)
+//    var length: Int
+//    while (inputStream.read(buffer).also { length = it } > 0) outputStream.write(buffer, 0, length)
+//    outputStream.close()
+//    inputStream.close()
+//    return myFile
+//}
+
+fun uriToFile(uri: Uri, context: Context): File {
+    val contentResolver = context.contentResolver
+    val tempFile = File.createTempFile("tempFile", null, context.cacheDir)
+    tempFile.outputStream().use { outputStream ->
+        contentResolver.openInputStream(uri)?.use { inputStream ->
+            inputStream.copyTo(outputStream)
+        }
+    }
+    return tempFile
 }
 
 @RequiresApi(Build.VERSION_CODES.Q)
