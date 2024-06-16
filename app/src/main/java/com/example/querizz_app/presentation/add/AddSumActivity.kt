@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,11 +24,13 @@ import com.example.querizz_app.databinding.ActivityAddSumBinding
 import com.example.querizz_app.presentation.home.HomeActivity
 import com.example.querizz_app.presentation.result.ResultActivity
 import com.example.querizz_app.presentation.view.ViewModelFactory
+import com.example.querizz_app.util.reduceFileImage
 import com.example.querizz_app.util.uriToFile
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -50,7 +53,8 @@ class AddSumActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.fileUpload.setOnClickListener {
-            startGallery()
+//            startGallery()
+            pickFile()
         }
 
         binding.summarize.setOnClickListener {
@@ -60,35 +64,37 @@ class AddSumActivity : AppCompatActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_FILE_REQUEST_CODE && resultCode == RESULT_OK) {
+            currentFileUri = data?.data
+        }
+    }
+
     private fun uploadFile() {
         currentFileUri?.let { uri ->
-            val imageFile = uriToFile(uri, this)
-            Log.d("Image File", "showImage: ${imageFile.path}")
-            showLoading(true)
-
+            val imageFile = uriToFile(uri, this).reduceFileImage()
             val title = binding.etTitle.text.toString()
             val subtitle = binding.etSubtitle.text.toString()
+            showLoading(true)
 
             val titleRequestBody = title.toRequestBody("text/plain".toMediaType())
             val subtitleRequestBody = subtitle.toRequestBody("text/plain".toMediaType())
-            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+            val mimeType = contentResolver.getType(uri) ?: "application/octet-stream"
+            val requestImageFile = imageFile.asRequestBody(mimeType.toMediaTypeOrNull())
             val multipartBody = MultipartBody.Part.createFormData(
-                "photo",
+                "file",
                 imageFile.name,
                 requestImageFile
             )
-
-            val intent = Intent(this, HomeActivity::class.java)
 
             lifecycleScope.launch {
                 try {
                     val userPref = UserPreference.getInstance(this@AddSumActivity)
                     val token = userPref.getSession().first().token
                     val apiService = ApiConfig.getApiService(token)
-                    val successResponse = apiService.uploadFile(token, multipartBody, titleRequestBody, subtitleRequestBody)
+                    val successResponse = apiService.uploadFile(multipartBody, titleRequestBody, subtitleRequestBody)
                     showToast(successResponse.message!!)
-                    startActivity(intent)
-                    finish()
                     showLoading(false)
                 } catch (e: HttpException) {
                     val errorBody = e.response()?.errorBody()?.string()
@@ -98,11 +104,107 @@ class AddSumActivity : AppCompatActivity() {
                 }
             }
 
+//            lifecycleScope.launch {
+//                try {
+//                    val userPreference = UserPreference.getInstance(this@AddSumActivity)
+//                    val token = userPreference.getSession().first().token
+//
+//                    // Ensure token is not null
+//                    if (token.isNullOrEmpty()) {
+//                        showToast("Token is missing. Please log in again.")
+//                        showLoading(false)
+//                        return@launch
+//                    }
+//
+//                    Log.d("UploadFile", "Token: Bearer $token")  // Log token for debugging
+//
+////                    viewModel.uploadFile(token, multipartBody, titleRequestBody, subtitleRequestBody)
+//
+//                    viewModel.response.observe(this@AddSumActivity){ res ->
+//                        if(res.error.isNullOrEmpty()){
+//                            AlertDialog.Builder(this@AddSumActivity).apply {
+//                                setTitle("Querizz")
+//                                setMessage("Upload Sukses")
+//                                setPositiveButton("Oke") { dialog, _ ->
+//                                    dialog.dismiss()
+//                                    showLoading(false)
+//                                    finish()
+//                                }
+//                                create()
+//                                show()
+//                            }
+//                        }
+//                    }
+//                } catch (e: HttpException) {
+//                    val errorBody = e.response()?.errorBody()?.string()
+//                    val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
+//                    AlertDialog.Builder(this@AddSumActivity).apply {
+//                        setTitle("Querizz")
+//                        setMessage("Gagal upload" + ": ${errorResponse.message}")
+//                        setPositiveButton("OKe") { dialog, _ ->
+//                            dialog.dismiss()
+//                            showLoading(false)
+//                        }
+//                        create()
+//                        show()
+//                    }
+//                }
+//            }
         } ?: showToast("Image kosong")
     }
 
-    private fun startGallery() {
-        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+//    private fun uploadFile() {
+//        currentFileUri?.let { uri ->
+//            val imageFile = uriToFile(uri, this)
+//            Log.d("Image File", "showImage: ${imageFile.path}")
+//            showLoading(true)
+//
+//            val title = binding.etTitle.text.toString()
+//            val subtitle = binding.etSubtitle.text.toString()
+//
+//            val titleRequestBody = title.toRequestBody("text/plain".toMediaType())
+//            val subtitleRequestBody = subtitle.toRequestBody("text/plain".toMediaType())
+//            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+//            val multipartBody = MultipartBody.Part.createFormData(
+//                "photo",
+//                imageFile.name,
+//                requestImageFile
+//            )
+//
+//            val intent = Intent(this, HomeActivity::class.java)
+//
+//            lifecycleScope.launch {
+//                try {
+//                    val userPref = UserPreference.getInstance(this@AddSumActivity)
+//                    val token = userPref.getSession().first().token
+//                    val apiService = ApiConfig.getApiService(token)
+////                    viewModel.uploadFile(token, multipartBody, titleRequestBody, subtitleRequestBody)
+//                    val successResponse = apiService.uploadFile(multipartBody, titleRequestBody, subtitleRequestBody)
+//                    showToast(successResponse.message!!)
+//                    startActivity(intent)
+//                    finish()
+//                    showLoading(false)
+//                } catch (e: HttpException) {
+//                    val errorBody = e.response()?.errorBody()?.string()
+//                    val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
+//                    showToast(errorResponse.message!!)
+//                    showLoading(false)
+//                }
+//            }
+//
+//        } ?: showToast("Image kosong")
+//    }
+
+//    private fun startGallery() {
+//        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+//    }
+
+    private fun pickFile() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "*/*"
+            addCategory(Intent.CATEGORY_OPENABLE)
+        }
+        startActivityForResult(Intent.createChooser(intent, "Select a file"), PICK_FILE_REQUEST_CODE)
     }
 
     private val launcherGallery = registerForActivityResult(
@@ -175,5 +277,9 @@ class AddSumActivity : AppCompatActivity() {
     }
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val PICK_FILE_REQUEST_CODE = 1
     }
 }

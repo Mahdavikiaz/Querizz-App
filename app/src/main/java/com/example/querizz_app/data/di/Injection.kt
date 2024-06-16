@@ -14,6 +14,6 @@ object Injection {
             pref.getSession().first()
         }
         val apiService = ApiConfig.getApiService(user.token)
-        return Repository.getInstance(apiService, pref)
+        return Repository(apiService, pref)
     }
 }

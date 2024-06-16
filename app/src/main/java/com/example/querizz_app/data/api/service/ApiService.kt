@@ -13,10 +13,8 @@ import retrofit2.http.Query
 
 interface ApiService {
     @Multipart
-    @POST("prediction")
+    @POST("upload")
     suspend fun uploadFile(
-//        @Part file: MultipartBody.Part,
-        @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
         @Part("title") title: RequestBody,
         @Part("subtitle") subtitle: RequestBody
