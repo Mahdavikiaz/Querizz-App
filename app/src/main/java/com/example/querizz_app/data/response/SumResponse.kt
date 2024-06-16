@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class SumResponse(
 
 	@field:SerializedName("data")
-	val data: List<DataItem>,
+	val data: List<DataItem?>? = emptyList(),
 
 	@field:SerializedName("status")
 	val status: String? = null

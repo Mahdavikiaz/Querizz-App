@@ -94,12 +94,15 @@ class AddSumActivity : AppCompatActivity() {
                     val token = userPref.getSession().first().token
                     val apiService = ApiConfig.getApiService(token)
                     val successResponse = apiService.uploadFile(multipartBody, titleRequestBody, subtitleRequestBody)
+                    println("Supported MIME type: $mimeType")
                     showToast(successResponse.message!!)
                     showLoading(false)
                 } catch (e: HttpException) {
                     val errorBody = e.response()?.errorBody()?.string()
                     val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
+                    println("Unsupported MIME type: $mimeType")
                     showToast(errorResponse.message!!)
+                    Log.e("Error", errorResponse.statusCode.toString())
                     showLoading(false)
                 }
             }

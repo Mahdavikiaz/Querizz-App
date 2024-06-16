@@ -3,24 +3,21 @@ package com.example.querizz_app.presentation.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.querizz_app.adapter.LoadingStateAdapter
 import com.example.querizz_app.adapter.SumAdapter
 import com.example.querizz_app.data.api.config.ApiConfig
-import com.example.querizz_app.data.api.config.AuthApiConfig
 import com.example.querizz_app.data.pref.UserPreference
-import com.example.querizz_app.data.repository.AuthRepository
 import com.example.querizz_app.data.repository.Repository
+import com.example.querizz_app.data.response.ApiResponse
+import com.example.querizz_app.data.response.DataItem
 import com.example.querizz_app.databinding.ActivityHomeBinding
 import com.example.querizz_app.presentation.add.AddSumActivity
-import com.example.querizz_app.presentation.add.AddSumViewModel
-import com.example.querizz_app.presentation.view.AuthViewModelFactory
 import com.example.querizz_app.presentation.view.ViewModelFactory
 import com.example.querizz_app.presentation.welcome.WelcomeActivity
 import kotlinx.coroutines.launch
@@ -39,6 +36,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.rvSummary.layoutManager = LinearLayoutManager(this)
         sumAdapter = SumAdapter()
         binding.rvSummary.adapter = sumAdapter
         checkAuthority()
@@ -59,7 +57,26 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
             } else {
-                setSummaryData()
+                viewModel.getSummaries().observe(this) { response ->
+                    when(response) {
+                        is ApiResponse.Loading -> {
+                            showLoading(true)
+                        }
+                        is ApiResponse.Success -> {
+                            showLoading(false)
+                            response.data.let {sumResponse ->
+                                sumResponse.data?.let { dataItems ->
+                                    val filteredList = dataItems.filterNotNull()
+                                    setSummaryData(filteredList)
+                                }
+                            }
+                        }
+                        is ApiResponse.Error -> {
+                            showLoading(false)
+                            showToast(response.error)
+                        }
+                    }
+                }
                 binding.tvHome.text = "Hello ${user.email}"
             }
         }
@@ -70,26 +87,10 @@ class HomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun setSummaryData() {
-        sumAdapter = SumAdapter()
-        binding.rvSummary.adapter = sumAdapter.withLoadStateFooter(
-            footer = LoadingStateAdapter {
-                sumAdapter.retry()
-            }
-        )
-        viewModel.summaries.observe(this) {
-            lifecycleScope.launch {
-                sumAdapter.submitData(it)
-            }
-        }
-        binding.rvSummary.layoutManager = LinearLayoutManager(this)
-
-        // Pantau status load dari adapter
-        sumAdapter.addLoadStateListener { loadState ->
-            // Jika sedang memuat data, tampilkan ProgressBar
-            val isLoading = loadState.source.refresh is LoadState.Loading
-            showLoading(isLoading)
-        }
+    private fun setSummaryData(sumList : List<DataItem>) {
+        val adapter = SumAdapter()
+        adapter.submitList(sumList)
+        binding.rvSummary.adapter = adapter
     }
 
     private fun getTokenUser(): String {
@@ -99,6 +100,10 @@ class HomeActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

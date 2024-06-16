@@ -9,12 +9,16 @@ import androidx.paging.cachedIn
 import com.example.querizz_app.data.model.UserModel
 import com.example.querizz_app.data.repository.AuthRepository
 import com.example.querizz_app.data.repository.Repository
+import com.example.querizz_app.data.response.ApiResponse
 import com.example.querizz_app.data.response.DataItem
+import com.example.querizz_app.data.response.SumResponse
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
 
-    val summaries: LiveData<PagingData<DataItem>> = repository.getSummary().cachedIn(viewModelScope)
+//    val summaries: LiveData<PagingData<DataItem>> = repository.getSummary().cachedIn(viewModelScope)
+
+    fun getSummaries(): LiveData<ApiResponse<SumResponse>> = repository.getSummary()
 
     fun getSession(): LiveData<UserModel> {
         return repository.getSession().asLiveData()

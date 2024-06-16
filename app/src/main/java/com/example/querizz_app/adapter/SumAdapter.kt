@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.querizz_app.data.response.DataItem
 import com.example.querizz_app.presentation.detail.DetailActivity
 import com.example.querizz_app.databinding.ItemSummaryBinding
 
-class SumAdapter : PagingDataAdapter<DataItem, SumAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class SumAdapter : ListAdapter<DataItem, SumAdapter.MyViewHolder>(DIFF_CALLBACK) {
     class MyViewHolder (val binding: ItemSummaryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(summary: DataItem) {
             binding.tvItemTitle.text = summary.title
