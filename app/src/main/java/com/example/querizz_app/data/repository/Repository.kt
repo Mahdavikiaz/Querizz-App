@@ -44,7 +44,7 @@ class Repository(
             val apiService = ApiConfig.getApiService(token)
             val pager = Pager(
                 config = PagingConfig(
-                    pageSize = 5
+                    pageSize = 1
                 ),
                 pagingSourceFactory = {
                     SumPagingSource(apiService)

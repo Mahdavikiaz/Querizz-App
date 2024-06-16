@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.querizz_app.adapter.LoadingStateAdapter
 import com.example.querizz_app.adapter.SumAdapter
@@ -55,10 +57,8 @@ class HomeActivity : AppCompatActivity() {
         viewModel.getSession().observe(this) { user ->
             if (user.token.isNullOrEmpty()) {
                 startActivity(Intent(this, WelcomeActivity::class.java))
-                Log.e("Token", "Token not found")
                 finish()
             } else {
-                Log.d("Token", "Token found")
                 setSummaryData()
                 binding.tvHome.text = "Hello ${user.email}"
             }
@@ -68,7 +68,6 @@ class HomeActivity : AppCompatActivity() {
     private fun navigateToUpload() {
         val intent = Intent(this@HomeActivity, AddSumActivity::class.java)
         startActivity(intent)
-        finish()
     }
 
     private fun setSummaryData() {
@@ -84,11 +83,22 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         binding.rvSummary.layoutManager = LinearLayoutManager(this)
+
+        // Pantau status load dari adapter
+        sumAdapter.addLoadStateListener { loadState ->
+            // Jika sedang memuat data, tampilkan ProgressBar
+            val isLoading = loadState.source.refresh is LoadState.Loading
+            showLoading(isLoading)
+        }
     }
 
     private fun getTokenUser(): String {
         val sharedPreferences = getSharedPreferences(USER_PREF, Context.MODE_PRIVATE)
         return sharedPreferences.getString(USER_TOKEN, "") ?: ""
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     companion object {
