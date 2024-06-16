@@ -7,8 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.querizz_app.adapter.SumAdapter
 import com.example.querizz_app.data.api.config.ApiConfig
@@ -20,7 +18,6 @@ import com.example.querizz_app.databinding.ActivityHomeBinding
 import com.example.querizz_app.presentation.add.AddSumActivity
 import com.example.querizz_app.presentation.view.ViewModelFactory
 import com.example.querizz_app.presentation.welcome.WelcomeActivity
-import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
 

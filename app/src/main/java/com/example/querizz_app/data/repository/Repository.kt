@@ -1,37 +1,27 @@
 package com.example.querizz_app.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.example.querizz_app.data.api.config.ApiConfig
 import com.example.querizz_app.data.api.service.ApiService
-import com.example.querizz_app.data.api.service.AuthApiService
 import com.example.querizz_app.data.model.UserModel
 import com.example.querizz_app.data.pref.UserPreference
 import com.example.querizz_app.data.response.ApiResponse
-import com.example.querizz_app.data.response.DataItem
 import com.example.querizz_app.data.response.LoginResponse
 import com.example.querizz_app.data.response.SumResponse
 import com.example.querizz_app.data.response.UploadResponse
 import com.example.querizz_app.util.reduceFileImage
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.File
 
-class   Repository(
+class Repository(
     private val apiService: ApiService,
     private val userPreference: UserPreference
 ) {
@@ -42,7 +32,7 @@ class   Repository(
 
     suspend fun logout() = userPreference.logout()
 
-    fun uploadStory(file: File, title: String, subtitle: String): LiveData<ApiResponse<UploadResponse>> = liveData {
+    fun uploadFile(file: File, title: String, subtitle: String): LiveData<ApiResponse<UploadResponse>> = liveData {
         val userSession = userPreference.getSession().firstOrNull()
         if (userSession != null && userSession.token.isNotEmpty()) {
             val token = userSession.token
