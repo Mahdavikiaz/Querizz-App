@@ -15,7 +15,7 @@ interface ApiService {
     @Multipart
     @POST("upload")
     suspend fun uploadFile(
-        @Part("image") file: MultipartBody.Part,
+        @Part file: MultipartBody.Part,
         @Part("title") title: RequestBody,
         @Part("subtitle") subtitle: RequestBody
     ): UploadResponse

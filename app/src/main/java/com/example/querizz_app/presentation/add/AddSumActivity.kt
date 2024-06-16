@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.querizz_app.R
 import com.example.querizz_app.data.api.config.ApiConfig
 import com.example.querizz_app.data.pref.UserPreference
+import com.example.querizz_app.data.response.ApiResponse
 import com.example.querizz_app.data.response.UploadResponse
 import com.example.querizz_app.databinding.ActivityAddSumBinding
 import com.example.querizz_app.presentation.home.HomeActivity
@@ -53,14 +54,15 @@ class AddSumActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.fileUpload.setOnClickListener {
-//            startGallery()
             pickFile()
         }
 
         binding.summarize.setOnClickListener {
-            uploadFile()
-//            startActivity(Intent(this, HomeActivity::class.java))
-//            finish()
+            currentFileUri?.let { uri ->
+                val title = binding.etTitle.text.toString()
+                val subtitle = binding.etSubtitle.text.toString()
+                uploadFile(uri, title, subtitle)
+            } ?: showToast("Please select an image first")
         }
     }
 
@@ -71,135 +73,26 @@ class AddSumActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadFile() {
-        currentFileUri?.let { uri ->
-            val imageFile = uriToFile(uri, this)
-            val title = binding.etTitle.text.toString()
-            val subtitle = binding.etSubtitle.text.toString()
-            showLoading(true)
-
-            val titleRequestBody = title.toRequestBody("text/plain".toMediaType())
-            val subtitleRequestBody = subtitle.toRequestBody("text/plain".toMediaType())
-            val requestFile = imageFile.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-//            val mimeType = contentResolver.getType(uri) ?: "application/octet-stream"
-//            val requestImageFile = imageFile.asRequestBody(mimeType.toMediaTypeOrNull())
-            val multipartBody = MultipartBody.Part.createFormData(
-                "file",
-                imageFile.name,
-                requestFile
-            )
-
-            lifecycleScope.launch {
-                try {
-                    val userPref = UserPreference.getInstance(this@AddSumActivity)
-                    val token = userPref.getSession().first().token
-                    val apiService = ApiConfig.getApiService(token)
-                    val successResponse = apiService.uploadFile(multipartBody, titleRequestBody, subtitleRequestBody)
-                    showToast(successResponse.message!!)
+    private fun uploadFile(uri: Uri, title: String, subtitle: String) {
+        viewModel.getSession()
+        viewModel.uploadStory(uriToFile(uri, this), title, subtitle).observe(this) { response ->
+            when(response) {
+                is ApiResponse.Loading -> {
+                    showLoading(true)
+                }
+                is ApiResponse.Success -> {
+                    val intent = Intent(this@AddSumActivity, HomeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    finish()
+                }
+                is ApiResponse.Error -> {
                     showLoading(false)
-                } catch (e: HttpException) {
-                    val errorBody = e.response()?.errorBody()?.string()
-                    val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
-                    showToast(errorResponse.message!!)
-                    Log.e("Error", errorResponse.statusCode.toString())
-                    showLoading(false)
+                    showToast(response.error)
                 }
             }
-
-//            lifecycleScope.launch {
-//                try {
-//                    val userPreference = UserPreference.getInstance(this@AddSumActivity)
-//                    val token = userPreference.getSession().first().token
-//
-//                    // Ensure token is not null
-//                    if (token.isNullOrEmpty()) {
-//                        showToast("Token is missing. Please log in again.")
-//                        showLoading(false)
-//                        return@launch
-//                    }
-//
-//                    Log.d("UploadFile", "Token: Bearer $token")  // Log token for debugging
-//
-////                    viewModel.uploadFile(token, multipartBody, titleRequestBody, subtitleRequestBody)
-//
-//                    viewModel.response.observe(this@AddSumActivity){ res ->
-//                        if(res.error.isNullOrEmpty()){
-//                            AlertDialog.Builder(this@AddSumActivity).apply {
-//                                setTitle("Querizz")
-//                                setMessage("Upload Sukses")
-//                                setPositiveButton("Oke") { dialog, _ ->
-//                                    dialog.dismiss()
-//                                    showLoading(false)
-//                                    finish()
-//                                }
-//                                create()
-//                                show()
-//                            }
-//                        }
-//                    }
-//                } catch (e: HttpException) {
-//                    val errorBody = e.response()?.errorBody()?.string()
-//                    val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
-//                    AlertDialog.Builder(this@AddSumActivity).apply {
-//                        setTitle("Querizz")
-//                        setMessage("Gagal upload" + ": ${errorResponse.message}")
-//                        setPositiveButton("OKe") { dialog, _ ->
-//                            dialog.dismiss()
-//                            showLoading(false)
-//                        }
-//                        create()
-//                        show()
-//                    }
-//                }
-//            }
-        } ?: showToast("Image kosong")
+        }
     }
-
-//    private fun uploadFile() {
-//        currentFileUri?.let { uri ->
-//            val imageFile = uriToFile(uri, this)
-//            Log.d("Image File", "showImage: ${imageFile.path}")
-//            showLoading(true)
-//
-//            val title = binding.etTitle.text.toString()
-//            val subtitle = binding.etSubtitle.text.toString()
-//
-//            val titleRequestBody = title.toRequestBody("text/plain".toMediaType())
-//            val subtitleRequestBody = subtitle.toRequestBody("text/plain".toMediaType())
-//            val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
-//            val multipartBody = MultipartBody.Part.createFormData(
-//                "photo",
-//                imageFile.name,
-//                requestImageFile
-//            )
-//
-//            val intent = Intent(this, HomeActivity::class.java)
-//
-//            lifecycleScope.launch {
-//                try {
-//                    val userPref = UserPreference.getInstance(this@AddSumActivity)
-//                    val token = userPref.getSession().first().token
-//                    val apiService = ApiConfig.getApiService(token)
-////                    viewModel.uploadFile(token, multipartBody, titleRequestBody, subtitleRequestBody)
-//                    val successResponse = apiService.uploadFile(multipartBody, titleRequestBody, subtitleRequestBody)
-//                    showToast(successResponse.message!!)
-//                    startActivity(intent)
-//                    finish()
-//                    showLoading(false)
-//                } catch (e: HttpException) {
-//                    val errorBody = e.response()?.errorBody()?.string()
-//                    val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
-//                    showToast(errorResponse.message!!)
-//                    showLoading(false)
-//                }
-//            }
-//
-//        } ?: showToast("Image kosong")
-//    }
-
-//    private fun startGallery() {
-//        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-//    }
 
     private fun pickFile() {
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
@@ -218,61 +111,6 @@ class AddSumActivity : AppCompatActivity() {
             Log.d("Photo Picker", "No media selected")
         }
     }
-
-//    private fun uploadFile() {
-//        currentFileUri?.let {
-//            val title = binding.etTitle.text.toString()
-//            val subtitle = binding.etSubtitle.text.toString()
-//
-//            val titleRequestBody = title.toRequestBody("text/plain".toMediaType())
-//            val subtitleRequestBody = subtitle.toRequestBody("text/plain".toMediaType())
-//
-//            lifecycleScope.launch {
-//                try {
-//                    showLoading(true)  // Show loading before starting upload
-//                    val userPreference = UserPreference.getInstance(this@AddSumActivity)
-//                    val token = userPreference.getSession().first().token
-//
-//                    val response = viewModel.uploadFile(token, titleRequestBody, subtitleRequestBody)
-//                    Log.e("Success", "Success upload file")
-//                    showToast(response.message!!)
-//                } catch (e: HttpException) {
-//                    val errorBody = e.response()?.errorBody()?.string()
-//                    val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
-//                    showToast(errorResponse.message!!)
-//                    Log.e("Error", "Error upload file: ${e.message()}")
-//                } finally {
-//                    showLoading(false)  // Hide loading after upload
-//                }
-//            }
-//        }
-//    }
-
-
-//    private fun uploadFile() {
-//        currentFileUri?.let {
-//            val title = binding.etTitle.text.toString()
-//            val subtitle = binding.etSubtitle.text.toString()
-//
-//            val titleRequestBody = title.toRequestBody("text/plain".toMediaType())
-//            val subtitleRequestBody = subtitle.toRequestBody("text/plain".toMediaType())
-//
-//            lifecycleScope.launch {
-//                try {
-//                    val userPreference = UserPreference.getInstance(this@AddSumActivity)
-//                    val token = userPreference.getSession().first().token
-//
-//                    viewModel.uploadFile(token, titleRequestBody, subtitleRequestBody)
-//                    Log.e("Success", "Success upload file")
-//                } catch (e: HttpException) {
-//                    val errorBody = e.response()?.errorBody()?.string()
-//                    val errorResponse = Gson().fromJson(errorBody, UploadResponse::class.java)
-//                    showToast(errorResponse.message!!)
-//                    showLoading(false)
-//                }
-//            }
-//        }
-//    }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
