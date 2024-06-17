@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toTopOf="@id/btn_yes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_message_user"
+        tools:listitem="@layout/item_smart_reply"
         />
 
     <Button

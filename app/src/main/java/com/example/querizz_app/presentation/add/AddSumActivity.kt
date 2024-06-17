@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.querizz_app.data.response.ApiResponse
 import com.example.querizz_app.databinding.ActivityAddSumBinding
 import com.example.querizz_app.presentation.home.HomeActivity
+import com.example.querizz_app.presentation.result.ResultActivity
 import com.example.querizz_app.presentation.view.ViewModelFactory
 import com.example.querizz_app.util.uriToFile
 class AddSumActivity : AppCompatActivity() {
@@ -58,8 +59,14 @@ class AddSumActivity : AppCompatActivity() {
                     showLoading(true)
                 }
                 is ApiResponse.Success -> {
-                    val intent = Intent(this@AddSumActivity, HomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                    val intent = Intent(this@AddSumActivity, HomeActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
+                    val dummyResults = arrayListOf("Result 1", "Result 2", "Result 3")
+
+                    val intent = Intent(this@AddSumActivity, ResultActivity::class.java).apply {
+                        putStringArrayListExtra("SUMMARY_RESULTS", dummyResults)
+                    }
                     startActivity(intent)
                     finish()
                 }
