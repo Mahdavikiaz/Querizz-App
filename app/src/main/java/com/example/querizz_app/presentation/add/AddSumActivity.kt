@@ -62,10 +62,10 @@ class AddSumActivity : AppCompatActivity() {
 //                    val intent = Intent(this@AddSumActivity, HomeActivity::class.java)
 //                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
 
-                    val dummyResults = arrayListOf("Result 1", "Result 2", "Result 3")
+                    val dummyResults = "Hasil Summary"
 
                     val intent = Intent(this@AddSumActivity, ResultActivity::class.java).apply {
-                        putStringArrayListExtra("SUMMARY_RESULTS", dummyResults)
+                        putExtra("SUMMARY_RESULTS", dummyResults)
                     }
                     startActivity(intent)
                     finish()
