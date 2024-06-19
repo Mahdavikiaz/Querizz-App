@@ -25,4 +25,41 @@
     <string name="welcome_title">Querizz</string>
     <string name="welcome_subtitle">Welcome to Querizz</string>
     <string name="or">Or</string>
+
+    <string-array name="question">
+        <item>Which of the following is NOT a core component of a computer Central Processing Unit (CPU)?</item>
+        <item>What is the term for a set of instructions that tells a computer how to perform a specific task?</item>
+        <item>In computer networking, what does the term "IP address" stand for?</item>
+    </string-array>
+
+    <string-array name="a_answer">
+        <item>Monitor</item>
+        <item>Hardware</item>
+        <item>Internal Protocol</item>
+    </string-array>
+
+    <string-array name="b_answer">
+        <item>Memory (RAM)</item>
+        <item>Software</item>
+        <item>Internet Protocol</item>
+    </string-array>
+
+    <string-array name="c_answer">
+        <item>Storage (Hard Drive)</item>
+        <item>Algorithm</item>
+        <item>Information Packet</item>
+    </string-array>
+
+    <string-array name="d_answer">
+        <item>Graphics Processing Unit (GPU)</item>
+        <item>Program</item>
+        <item>Integrated Port</item>
+    </string-array>
+
+    <string-array name="correct_answer">
+        <item>Monitor</item>
+        <item>Program</item>
+        <item>Internet Protocol</item>
+    </string-array>
+
 </resources>

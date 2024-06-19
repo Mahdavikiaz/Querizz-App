@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginVertical="16dp"
         >
 
         <TextView
@@ -89,6 +90,71 @@
                 />
 
         </RadioGroup>
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tv_question"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            android:orientation="vertical"-->
+<!--            >-->
+
+<!--            <Button-->
+<!--                android:id="@+id/a_answer"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="A"-->
+<!--                android:textColor="@color/neutral_800"-->
+<!--                android:backgroundTint="@color/neutral_200"-->
+<!--                android:paddingHorizontal="24dp"-->
+<!--                android:paddingVertical="16dp"-->
+<!--                android:elevation="8dp"-->
+<!--                />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/b_answer"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/neutral_800"-->
+<!--                android:backgroundTint="@color/neutral_200"-->
+<!--                android:paddingHorizontal="24dp"-->
+<!--                android:paddingVertical="16dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:elevation="4dp"-->
+<!--                android:text="B"-->
+<!--                />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/c_answer"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/neutral_800"-->
+<!--                android:backgroundTint="@color/neutral_200"-->
+<!--                android:paddingHorizontal="24dp"-->
+<!--                android:paddingVertical="16dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:elevation="4dp"-->
+<!--                android:text="C"-->
+<!--                />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/d_answer"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/neutral_800"-->
+<!--                android:backgroundTint="@color/neutral_200"-->
+<!--                android:paddingHorizontal="24dp"-->
+<!--                android:paddingVertical="16dp"-->
+<!--                android:layout_marginVertical="8dp"-->
+<!--                android:elevation="4dp"-->
+<!--                android:text="D"-->
+<!--                />-->
+
+<!--        </LinearLayout>-->
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
