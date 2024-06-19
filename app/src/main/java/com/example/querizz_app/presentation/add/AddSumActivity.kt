@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.querizz_app.R
 import com.example.querizz_app.data.response.ApiResponse
 import com.example.querizz_app.databinding.ActivityAddSumBinding
 import com.example.querizz_app.presentation.home.HomeActivity
@@ -59,10 +60,7 @@ class AddSumActivity : AppCompatActivity() {
                     showLoading(true)
                 }
                 is ApiResponse.Success -> {
-//                    val intent = Intent(this@AddSumActivity, HomeActivity::class.java)
-//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-
-                    val dummyResults = "Hasil Summary"
+                    val dummyResults = getString(R.string.result_summary)
 
                     val intent = Intent(this@AddSumActivity, ResultActivity::class.java).apply {
                         putExtra("SUMMARY_RESULTS", dummyResults)
