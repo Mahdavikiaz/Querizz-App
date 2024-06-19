@@ -1,42 +1,20 @@
 package com.example.querizz_app.presentation.add
 
-import android.app.ProgressDialog.show
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
-import com.example.querizz_app.R
-import com.example.querizz_app.data.api.config.ApiConfig
-import com.example.querizz_app.data.pref.UserPreference
 import com.example.querizz_app.data.response.ApiResponse
-import com.example.querizz_app.data.response.UploadResponse
 import com.example.querizz_app.databinding.ActivityAddSumBinding
 import com.example.querizz_app.presentation.home.HomeActivity
 import com.example.querizz_app.presentation.result.ResultActivity
 import com.example.querizz_app.presentation.view.ViewModelFactory
-import com.example.querizz_app.util.reduceFileImage
 import com.example.querizz_app.util.uriToFile
-import com.google.gson.Gson
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.HttpException
-
 class AddSumActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddSumBinding
@@ -75,14 +53,20 @@ class AddSumActivity : AppCompatActivity() {
 
     private fun uploadFile(uri: Uri, title: String, subtitle: String) {
         viewModel.getSession()
-        viewModel.uploadStory(uriToFile(uri, this), title, subtitle).observe(this) { response ->
+        viewModel.uploadFile(uriToFile(uri, this), title, subtitle).observe(this) { response ->
             when(response) {
                 is ApiResponse.Loading -> {
                     showLoading(true)
                 }
                 is ApiResponse.Success -> {
-                    val intent = Intent(this@AddSumActivity, HomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                    val intent = Intent(this@AddSumActivity, HomeActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
+                    val dummyResults = "Hasil Summary"
+
+                    val intent = Intent(this@AddSumActivity, ResultActivity::class.java).apply {
+                        putExtra("SUMMARY_RESULTS", dummyResults)
+                    }
                     startActivity(intent)
                     finish()
                 }
