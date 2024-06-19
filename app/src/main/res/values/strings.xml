@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Querizz-App</string>
     <string name="login_title">Welcome!</string>
-    <string name="login_subtitle">Subtitle</string>
+    <string name="login_subtitle">Please login to your account</string>
     <string name="email_hint">Enter your email</string>
     <string name="password_hint">Enter your password</string>
     <string name="sign_in_button">Sign In</string>
@@ -29,4 +29,5 @@
     <string name="result_summary">
         Computer Science is a field that encompasses the study of computers and computational systems. Unlike electrical and computer engineers, computer scientists primarily deal with software and software systems; this includes their theory, design, development, and application. Major areas of study within computer science include algorithms and data structures, computer and network design, modeling data and information processes, and artificial intelligence.\n\nComputer science also overlaps with other disciplines, such as mathematics, engineering, and linguistics, due to its focus on both the theoretical and practical aspects of computation. This interdisciplinary nature allows for the creation of a wide range of technologies and innovations, from the development of new algorithms to the creation of complex software systems. As the world becomes increasingly reliant on technology, the importance and impact of computer science continue to grow, influencing various sectors including healthcare, finance, and entertainment.
     </string>
+    <string name="home_greeting">What do you want to read today?</string>
 </resources>

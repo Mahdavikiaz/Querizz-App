@@ -23,12 +23,10 @@ class WelcomeActivity : AppCompatActivity() {
 
         binding.btSignup.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
-            finish()
         }
 
         binding.btSignin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
-            finish()
         }
     }
 }
