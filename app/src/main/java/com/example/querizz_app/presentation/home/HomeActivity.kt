@@ -74,7 +74,7 @@ class HomeActivity : AppCompatActivity() {
                         }
                     }
                 }
-                binding.tvHome.text = "Hello ${user.email}"
+                binding.tvHome.text = "Hello"
             }
         }
     }

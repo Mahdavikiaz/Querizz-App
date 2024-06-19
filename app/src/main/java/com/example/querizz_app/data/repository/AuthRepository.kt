@@ -2,20 +2,13 @@ package com.example.querizz_app.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.liveData
-import com.example.querizz_app.data.api.config.ApiConfig
 import com.example.querizz_app.data.api.service.AuthApiService
 import com.example.querizz_app.data.response.RegisterResponse
 import com.example.querizz_app.data.model.UserModel
 import com.example.querizz_app.data.pref.UserPreference
 import com.example.querizz_app.data.response.ApiResponse
-import com.example.querizz_app.data.response.DataItem
 import com.example.querizz_app.data.response.LoginResponse
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.firstOrNull
 import retrofit2.HttpException
 
 class AuthRepository(
