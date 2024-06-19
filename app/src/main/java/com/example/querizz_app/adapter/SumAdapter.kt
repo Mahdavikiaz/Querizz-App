@@ -16,13 +16,14 @@ class SumAdapter : ListAdapter<DataItem, SumAdapter.MyViewHolder>(DIFF_CALLBACK)
         fun bind(summary: DataItem) {
             binding.tvItemTitle.text = summary.title
             binding.tvItemDescription.text = summary.subtitle
+            val resultsItem = summary.results?.get(0)
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, DetailActivity::class.java)
-
-//                intent.putExtra(DetailActivity.EXTRA_TITLE, summary.name)
-//                intent.putExtra(DetailActivity.EXTRA_PHOTO, summary.photoUrl)
-//                intent.putExtra(DetailActivity.EXTRA_ID, summary.id)
+                intent.putExtra(DetailActivity.EXTRA_SUMMARY, resultsItem)
+                intent.putExtra(DetailActivity.EXTRA_TITLE, summary.title)
+                intent.putExtra(DetailActivity.EXTRA_SUBTITLE, summary.subtitle)
                 itemView.context.startActivity(intent)
+
             }
         }
     }

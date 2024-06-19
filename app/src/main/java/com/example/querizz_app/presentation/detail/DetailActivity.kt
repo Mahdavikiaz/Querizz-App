@@ -1,31 +1,29 @@
 package com.example.querizz_app.presentation.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.querizz_app.R
+import com.example.querizz_app.adapter.SectionsPagerAdapter
+import com.example.querizz_app.data.response.ResultsItem
 import com.example.querizz_app.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_detail)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this)
+        val title = intent.getStringExtra(EXTRA_TITLE)
+        val subtitle = intent.getStringExtra(EXTRA_SUBTITLE)
+        val resultsItem = intent.getParcelableExtra<ResultsItem>(EXTRA_SUMMARY)
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, resultsItem)
         val viewPager: ViewPager2 = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
@@ -34,15 +32,15 @@ class DetailActivity : AppCompatActivity() {
         }.attach()
 
         supportActionBar?.elevation = 0f
-
-        for (i in 0..3) {
-            val titleTv = binding
-        }
     }
 
     companion object {
         private val TAB_TITLES = intArrayOf(
-            R.layout.tab_title
+            R.string.tab_text_1,
+            R.string.tab_text_2
         )
+        const val EXTRA_TITLE = "extra_title"
+        const val EXTRA_SUBTITLE = "extra_subtitle"
+        const val EXTRA_SUMMARY = "extra_summary"
     }
 }
