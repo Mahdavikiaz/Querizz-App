@@ -2,15 +2,11 @@ package com.example.querizz_app.presentation.quiz
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.querizz_app.R
 import com.example.querizz_app.adapter.QuizAdapter
-import com.example.querizz_app.adapter.SumAdapter
 import com.example.querizz_app.data.model.QuizModel
 import com.example.querizz_app.databinding.ActivityQuizBinding
 import com.example.querizz_app.presentation.home.HomeActivity
@@ -56,7 +52,7 @@ class QuizActivity : AppCompatActivity() {
     private fun submitQuiz() {
         AlertDialog.Builder(this).apply {
             setTitle("Your Result!")
-            setMessage("Anda berhasil login!!")
+            setMessage("You have completed the quiz")
             setPositiveButton("Back") { _, _ ->
                 val intent = Intent(context, HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

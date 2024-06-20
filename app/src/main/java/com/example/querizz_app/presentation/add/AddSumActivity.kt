@@ -3,16 +3,13 @@ package com.example.querizz_app.presentation.add
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.querizz_app.R
 import com.example.querizz_app.data.response.ApiResponse
 import com.example.querizz_app.databinding.ActivityAddSumBinding
-import com.example.querizz_app.presentation.home.HomeActivity
 import com.example.querizz_app.presentation.result.ResultActivity
 import com.example.querizz_app.presentation.view.ViewModelFactory
 import com.example.querizz_app.util.uriToFile
@@ -61,7 +58,10 @@ class AddSumActivity : AppCompatActivity() {
                 }
                 is ApiResponse.Success -> {
                     val dummyResults = getString(R.string.result_summary)
-
+                    val mimeType = contentResolver.getType(uri) ?: "application/octet-stream"
+                    if(mimeType == "image/jpeg" || mimeType == "image/png" || mimeType == "image/jpg") {
+                        binding.ivPreview
+                    }
                     val intent = Intent(this@AddSumActivity, ResultActivity::class.java).apply {
                         putExtra("SUMMARY_RESULTS", dummyResults)
                     }
@@ -82,16 +82,6 @@ class AddSumActivity : AppCompatActivity() {
             addCategory(Intent.CATEGORY_OPENABLE)
         }
         startActivityForResult(Intent.createChooser(intent, "Select a file"), PICK_FILE_REQUEST_CODE)
-    }
-
-    private val launcherGallery = registerForActivityResult(
-        ActivityResultContracts.PickVisualMedia()
-    ) { uri: Uri? ->
-        if (uri != null) {
-            currentFileUri = uri
-        } else {
-            Log.d("Photo Picker", "No media selected")
-        }
     }
 
     private fun showLoading(isLoading: Boolean) {

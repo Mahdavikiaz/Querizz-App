@@ -1,27 +1,22 @@
 package com.example.querizz_app.presentation.detail
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.querizz_app.R
 import com.example.querizz_app.adapter.SectionsPagerAdapter
 import com.example.querizz_app.data.response.ResultsItem
-import com.example.querizz_app.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_detail)
 
-        val title = intent.getStringExtra(EXTRA_TITLE)
-        val subtitle = intent.getStringExtra(EXTRA_SUBTITLE)
         val resultsItem = intent.getParcelableExtra<ResultsItem>(EXTRA_SUMMARY)
         val sectionsPagerAdapter = SectionsPagerAdapter(this, resultsItem)
         val viewPager: ViewPager2 = findViewById(R.id.view_pager)

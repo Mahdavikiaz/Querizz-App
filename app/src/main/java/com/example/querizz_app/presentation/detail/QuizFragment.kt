@@ -7,11 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.querizz_app.R
-import com.example.querizz_app.adapter.QuizAdapter
 import com.example.querizz_app.adapter.QuizResultAdapter
 import com.example.querizz_app.data.model.QuizModel
-import com.example.querizz_app.databinding.ActivityDetailBinding
-import com.example.querizz_app.databinding.ActivityHomeBinding
 import com.example.querizz_app.databinding.FragmentQuizBinding
 
 class QuizFragment : Fragment() {
@@ -30,7 +27,7 @@ class QuizFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentQuizBinding.inflate(inflater, container, false)
         return binding.root
     }

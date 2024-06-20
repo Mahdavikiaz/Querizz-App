@@ -1,15 +1,12 @@
 package com.example.querizz_app.presentation.detail
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.querizz_app.R
-import com.example.querizz_app.data.response.DataItem
 import com.example.querizz_app.data.response.ResultsItem
-import com.example.querizz_app.databinding.FragmentQuizBinding
 import com.example.querizz_app.databinding.FragmentSummaryBinding
 
 class SummaryFragment : Fragment() {
@@ -23,13 +20,13 @@ class SummaryFragment : Fragment() {
         if (resultsItem != null) {
             sumData(resultsItem)
         }
-        binding.tvSummary.text = resultsItem?.label
+        binding.tvSummary.text = resources.getString(R.string.result_summary)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSummaryBinding.inflate(inflater, container, false)
         return binding.root
     }

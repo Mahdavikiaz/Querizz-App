@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.querizz_app.data.di.AuthInjection
 import com.example.querizz_app.presentation.register.RegisterViewModel
 import com.example.querizz_app.data.repository.AuthRepository
-import com.example.querizz_app.presentation.home.HomeViewModel
 import com.example.querizz_app.presentation.login.LoginViewModel
 
 class AuthViewModelFactory(private val repository: AuthRepository) : ViewModelProvider.NewInstanceFactory() {

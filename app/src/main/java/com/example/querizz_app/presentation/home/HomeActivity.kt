@@ -74,7 +74,7 @@ class HomeActivity : AppCompatActivity() {
                         }
                     }
                 }
-                binding.tvHome.text = "Hello"
+                binding.tvHome.text = "Hello ${user.name}"
             }
         }
     }
@@ -104,8 +104,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val EXTRA_TITLE = "extra_title"
-        private const val EXTRA_DESCRIPTION = "extra_description"
         private const val USER_PREF = "user_preferences"
         private const val USER_TOKEN = "user_token"
     }

@@ -7,7 +7,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.viewModelScope
 import com.example.querizz_app.data.api.config.AuthApiConfig
 import com.example.querizz_app.data.model.UserModel
 import com.example.querizz_app.data.pref.UserPreference
@@ -15,8 +14,6 @@ import com.example.querizz_app.data.repository.AuthRepository
 import com.example.querizz_app.data.response.ApiResponse
 import com.example.querizz_app.databinding.ActivityLoginBinding
 import com.example.querizz_app.presentation.home.HomeActivity
-import com.example.querizz_app.presentation.register.RegisterActivity
-import com.example.querizz_app.presentation.register.RegisterViewModel
 import com.example.querizz_app.presentation.view.AuthViewModelFactory
 
 class LoginActivity : AppCompatActivity() {
@@ -30,7 +27,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        binding.emailInput.setOnClickListener {
+            binding.etEmail.setHint("")
+        }
         binding.btnSignIn.setOnClickListener {
             login()
         }
@@ -52,7 +51,8 @@ class LoginActivity : AppCompatActivity() {
                 is ApiResponse.Success -> {
                     showLoading(false)
                     val token = response.data.token
-                    viewModel.saveSession(UserModel(email, token!!, true))
+                    val name = response.data.nama
+                    viewModel.saveSession(UserModel(email, name, token!!, true))
                     viewModel.saveSessionStatus.observe(this@LoginActivity) { isSaved ->
                         setupAction("Login Success")
                     }
