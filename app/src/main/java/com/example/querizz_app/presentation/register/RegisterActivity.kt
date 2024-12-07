@@ -28,8 +28,6 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.btSignup.setOnClickListener {
             setupRegister()
-//            startActivity(Intent(this, LoginActivity::class.java))
-//            finish()
         }
 
         viewModel.isLoading.observe(this) {
